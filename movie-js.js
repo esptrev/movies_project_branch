@@ -1,14 +1,13 @@
 (function (){
 const MOVIE_URL = `https://lateral-charming-rice.glitch.me/movies`;
 
-function fetchAllMovies(){
-    fetch(MOVIE_URL)
+ function fetchAllMovies(){
+    return fetch(MOVIE_URL)
         .then(function (res){
            return res.json()
         }).then(function(allMovies) {
-        console.log(allMovies);
+        return allMovies;
          })
-
 }
 
 function addAMovie(title,director){
@@ -45,13 +44,16 @@ function deleteAMovie (id){
 
 
 
-
+// setTimeout(fetchAllMovies, 1000)
 
 
 
  // deleteAMovie(257);
-fetchAllMovies();
-addAMovie('updated new movie', 'wesley');
-fetchAllMovies();
+ fetchAllMovies().then(function (allMovies) {
+    console.log(allMovies)
+    $("#loadingScreen").text("Movies are loaded!")
+});
+// addAMovie('updated new movie', 'wesley')
+// fetchAllMovies();
 
 })();
