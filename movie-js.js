@@ -71,7 +71,7 @@
         }
         return fetchAllMovies().then(function (allMovies) {
             for (const movie of allMovies) {
-                if (movie.title === title) {
+                if (movie.title === $('#selectTitle')) {
                     alert('Movie Edited')
                     let id = parseInt(movie.id)
                     fetch(`${MOVIE_URL}/${id}`, OPTIONS)
@@ -157,7 +157,7 @@
 
         $('#editAMovieForm').submit(function (e) {
             e.preventDefault();
-            if ($('#editTitle').val() === '') {
+            if ($('#selectTitle').val() === '') {
                 alert('Please Enter Title');
                 return;
             }
