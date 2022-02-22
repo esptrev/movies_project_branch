@@ -71,25 +71,25 @@
         }
         return fetchAllMovies().then(function (allMovies) {
             for (const movie of allMovies) {
-                if (movie.title === $('#selectTitle')) {
+                if (movie.title === $('#editTitle').val()) {
                     alert('Movie Edited')
                     let id = parseInt(movie.id)
-                    fetch(`${MOVIE_URL}/${id}`, OPTIONS)
+                    return fetch(`${MOVIE_URL}/${id}`, OPTIONS)
                 }
 
             }
         })
     }
 
-        function populateMovie() {
-            $('#movieSearchDiv').html('');
-            return fetch(`${MOVIE_URL}`)
-                .then(function (res) {
-                    return res.json()
-                }).then(function (data) {
-                    for (const movie of data) {
-                        if (movie.title === $('#searchBox').val()) {
-                            $('#movieSearchDiv').append(`<div class="card" style="width: 18rem;">
+    function populateMovie() {
+        $('#movieSearchDiv').html('');
+        return fetch(`${MOVIE_URL}`)
+            .then(function (res) {
+                return res.json()
+            }).then(function (data) {
+                for (const movie of data) {
+                    if (movie.title === $('#searchBox').val()) {
+                        $('#movieSearchDiv').append(`<div class="card" style="width: 18rem;">
                          <div class="card-body">
                              <h5 class="card-title">${movie.title}</h5>
                              <h6 class="card-subtitle mb-2 text-muted">${movie.year}</h6>
@@ -97,34 +97,21 @@
                              <div class="card-footer"><img src="${movie.poster}" alt="${movie.title} poster" width="200px"></div>
                        </div>
                      </div>`);
-                        }
                     }
-                })
-        }
+                }
+            })
+    }
 
 
-        $('#searchButton').click(populateMovie)
+    $('#searchButton').click(populateMovie)
 
 // setTimeout(fetchAllMovies, 1000)
 
 
-        //  deleteAMovie(282);
+    //  deleteAMovie(282);
 
-        function populateMovieList() {
-            $("#moviePoster").html('');
-            fetchAllMovies().then(function (allMovies) {
-                for (const movie of allMovies) {
-                    if (movie.poster !== '') {
-                        $('#moviePoster').append(`<img class="posters" src="${movie.poster}" alt="${movie.title} poster" width="200px">`)
-                    }
-                }
-                console.log(allMovies)
-                $("#loadingScreen").text("Movies are loaded!")
-            });
-
-        }
-
-
+    function populateMovieList() {
+        $("#moviePoster").html('');
         fetchAllMovies().then(function (allMovies) {
             for (const movie of allMovies) {
                 if (movie.poster !== '') {
@@ -135,70 +122,112 @@
             $("#loadingScreen").text("Movies are loaded!")
         });
 
+    }
 
-        $('#addAMovieForm').submit(function (e) {
-            e.preventDefault();
-            if ($('#addTitle').val() === '') {
-                alert('Please Enter Title');
-                return;
+
+    fetchAllMovies().then(function (allMovies) {
+        for (const movie of allMovies) {
+            if (movie.poster !== '') {
+                $('#moviePoster').append(`<img class="posters" src="${movie.poster}" alt="${movie.title} poster" width="200px">`)
             }
-            let title = $('#addTitle').val();
-            let director = $('#addDirector').val();
-            let genres = $('#addGenres').val();
-            let plot = $('#addPlot').val();
-            let poster = $('#addPoster').val();
-            let rating = $('#addRating').val();
-            let year = $('#addYear').val();
-            addAMovie(title, director, genres, plot, poster, rating, year).then(function () {
-                populateMovieList();
-            });
+        }
+        console.log(allMovies)
+        $("#loadingScreen").text("Movies are loaded!")
+    });
 
-        })
 
-        $('#editAMovieForm').submit(function (e) {
-            e.preventDefault();
-            if ($('#selectTitle').val() === '') {
-                alert('Please Enter Title');
-                return;
+    $('#addAMovieForm').submit(function (e) {
+        e.preventDefault();
+        if ($('#addTitle').val() === '') {
+            alert('Please Enter Title');
+            return;
+        }
+        let title = $('#addTitle').val();
+        let director = $('#addDirector').val();
+        let genres = $('#addGenres').val();
+        let plot = $('#addPlot').val();
+        let poster = $('#addPoster').val();
+        let rating = $('#addRating').val();
+        let year = $('#addYear').val();
+        addAMovie(title, director, genres, plot, poster, rating, year).then(function () {
+            populateMovieList();
+        });
+
+    })
+
+    $('#editAMovieForm').submit(function (e) {
+        e.preventDefault();
+        if ($('#editTitle').val() === '') {
+            alert('Please Enter Title');
+            return;
+        }
+        let title = $('#editTitle').val();
+        let director = $('#editDirector').val();
+        let genres = $('#editGenres').val();
+        let plot = $('#editPlot').val();
+        let poster = $('#editPoster').val();
+        let rating = $('#editRating').val();
+        let year = $('#editYear').val();
+        editMovie(title, director, genres, plot, poster, rating, year).then(function () {
+            populateMovieList();
+        });
+
+    })
+
+
+    $("#showAddMovieForm").click(function () {
+        $("#addAMovieForm").toggleClass('hide')
+    })
+
+    $('#deleteButton').click(function () {
+        let title = $('#deleteBox').val();
+        deleteAMovie(title).then(function () {
+            populateMovieList();
+        });
+    })
+
+    $('#showEditMovieForm').click(function () {
+        $('#oldMovieInfo').html('')
+        fetchAllMovies().then(function (allMovies) {
+            for (const movie of allMovies) {
+                if (movie.title === $('#selectTitle').val()) {
+                    $('#oldMovieInfo').append(`
+<!--//htmlformat--> 
+<form id="editAMovieForm">
+\t <span>Movie Title: </span><input id="editTitle" type="text" value=${movie.title}>
+\t<label for="editTitle"></label>
+\t <span>Director: </span><input id="editDirector" type="text" value=${movie.director}><br>
+\t<label for="editDirector"></label>
+\t<span>Genre: </span><input id="editGenres" type="text" value=${movie.genre}>
+\t<label for="editGenres"></label>
+\t<span>Plot: </span><input id="editPlot" type="text" value=${movie.plot}><br>
+\t<label for="editPlot"></label>
+\<tspan>Poster: </tspan><input id="editPoster" type="text" value=${movie.poster}>
+\t<label for="editPoster"></label>
+\<tspan>Rating: </tspan><input id="editRating" type="text" value=${movie.rating}><br>
+\t<label for="editRating"></label>
+\<tspan>Year: </tspan><input id="editYear" type="text" value=${movie.year}>
+\t<label for="editYear"></label>
+\t<button type="submit">Edit Movie</button>
+</form>`)
+                }
             }
-            let title = $('#editTitle').val();
-            let director = $('#editDirector').val();
-            let genres = $('#editGenres').val();
-            let plot = $('#editPlot').val();
-            let poster = $('#editPoster').val();
-            let rating = $('#editRating').val();
-            let year = $('#editYear').val();
-            editMovie(title, director, genres, plot, poster, rating, year).then(function () {
-                populateMovieList();
-            });
-
         })
+    })
 
 
-        $("#showAddMovieForm").click(function () {
-            $("#addAMovieForm").toggleClass('hide')
-        })
-
-        $('#deleteButton').click(function () {
-            let title = $('#deleteBox').val();
-            deleteAMovie(title).then(function () {
-                populateMovieList();
-            });
-        })
+    // addAMovie($('#addTitle').val(), $('#addDirector').val(),$('#addGenres').val(),$('#addPlot').val(),$('#addPoster').val(),$('#addRating').val(),$('#addYear').val())
+    // fetchAllMovies().then(function (allMovies) {
+    //     $('#movieSearchDiv').append(`${allMovies}`);
+    //
+    // });
 
 
-        // addAMovie($('#addTitle').val(), $('#addDirector').val(),$('#addGenres').val(),$('#addPlot').val(),$('#addPoster').val(),$('#addRating').val(),$('#addYear').val())
-        // fetchAllMovies().then(function (allMovies) {
-        //     $('#movieSearchDiv').append(`${allMovies}`);
-        //
-        // });
-
-
-        // editMovie(6,'EDitMovieTEst', 'wesleyB');
+    // editMovie(6,'EDitMovieTEst', 'wesleyB');
 // addAMovie();
 // fetchAllMovies();
 
-    })();
+})();
 
 
 // fetch('data')
