@@ -10,6 +10,8 @@ const MOVIE_URL = `https://lateral-charming-rice.glitch.me/movies`;
          })
 }
 
+
+
 function addAMovie(title,director,genres,plot,poster,rating,year){
     const MOVIE_INFO = {
         title: title,
@@ -29,17 +31,26 @@ function addAMovie(title,director,genres,plot,poster,rating,year){
         body: JSON.stringify(MOVIE_INFO),
     };
 
-    fetch(MOVIE_URL,OPTIONS)
+    return fetch(MOVIE_URL,OPTIONS)
         .then(function(res){
-            console.log('New Movie Posted')
+            alert('New Movie Posted')
         })
 }
 
-function deleteAMovie (id){
+function deleteAMovie (title){
     const OPTIONS = {
         method: 'DELETE',
     }
-    fetch(`${MOVIE_URL}/${id}`,OPTIONS)
+   return fetchAllMovies().then(function (allMovies){
+       for (const movie of allMovies) {
+           if(movie.title === title){
+               alert('Movie Deleted')
+               let id = parseInt(movie.id)
+              fetch(`${MOVIE_URL}/${id}`,OPTIONS)
+           }
+
+       }
+   })
 }
 
 function editMovie(id,title,director){
@@ -70,6 +81,7 @@ function populateMovie (){
                              <h5 class="card-title">${movie.title}</h5>
                              <h6 class="card-subtitle mb-2 text-muted">${movie.year}</h6>
                              <p class="card-text">${movie.plot}</p>
+                             <div class="card-footer"><img src="${movie.poster}" alt="${movie.title} poster" width="200px"></div>
                        </div>
                      </div>`);
                  }
@@ -83,23 +95,71 @@ $('#searchButton').click(populateMovie)
 // setTimeout(fetchAllMovies, 1000)
 
 
-     // deleteAMovie(6);
-     // deleteAMovie(258);
-     // deleteAMovie(262);
+   //  deleteAMovie(282);
 
+function populateMovieList(){
+     $("#moviePoster").html('');
+    fetchAllMovies().then(function (allMovies) {
+        for (const movie of allMovies) {
+            if(movie.poster !== ''){
+                $('#moviePoster').append(`<img class="posters" src="${movie.poster}" alt="${movie.title} poster" width="200px">`)
+            }
+        }
+        console.log(allMovies)
+        $("#loadingScreen").text("Movies are loaded!")
+    });
+
+}
 
 
 
 
 
  fetchAllMovies().then(function (allMovies) {
+     for (const movie of allMovies) {
+         if(movie.poster !== ''){
+             $('#moviePoster').append(`<img class="posters" src="${movie.poster}" alt="${movie.title} poster" width="200px">`)
+         }
+     }
     console.log(allMovies)
     $("#loadingScreen").text("Movies are loaded!")
 });
 
 
+ $('#addAMovieForm').submit(function (e){
+     e.preventDefault();
+     if($('#addTitle').val() === ''){
+         alert('Please Enter Title');
+         return;
+     }
+    let title = $('#addTitle').val();
+    let director =$('#addDirector').val();
+    let genres = $('#addGenres').val();
+    let plot = $('#addPlot').val();
+    let poster = $('#addPoster').val();
+    let rating = $('#addRating').val();
+    let year = $('#addYear').val();
+    addAMovie(title,director,genres,plot,poster,rating,year).then(function (){
+        populateMovieList();
+    });
+
+ })
 
 
+    $("#showAddMovieForm").click(function (){
+        $("#addAMovieForm").toggleClass('hide')
+    })
+
+    $('#deleteButton').click(function (){
+        let title = $('#deleteBox').val();
+        deleteAMovie(title).then(function (){
+            populateMovieList();
+        });
+    })
+
+
+
+    // addAMovie($('#addTitle').val(), $('#addDirector').val(),$('#addGenres').val(),$('#addPlot').val(),$('#addPoster').val(),$('#addRating').val(),$('#addYear').val())
  // fetchAllMovies().then(function (allMovies) {
  //     $('#movieSearchDiv').append(`${allMovies}`);
  //
@@ -111,3 +171,43 @@ $('#searchButton').click(populateMovie)
 // fetchAllMovies();
 
 })();
+
+
+// fetch('data')
+//     //     .then(function (res){
+//     //         return res.json()
+//     //     }).then(function (movies){
+//     //     return (movies);
+//     // }).then(function (movies){
+//     //     for (const movie of movies) {
+//     //         addAMovie(movie.title, movie.director,movie.genres,movie.plot,movie.poster,movie.rating,movie.year)
+//     //     }
+//     // })
+
+// $(document).ready(function (){
+//
+//
+//ATTEMPT FOR CLICKABLE IMAGES
+//
+//
+// $('.posters').dblclick(function (event){
+//     // fetchAllMovies().then(function (allMovies){
+//     //     for (const movie of allMovies) {
+//     //         if(movie.poster === $(this.attr('src'))){
+//     //             $('#movieSearchDiv').append(`<div class="card" style="width: 18rem;">
+//     //                     <div class="card-body">
+//     //                         <h5 class="card-title">${movie.title}</h5>
+//     //                         <h6 class="card-subtitle mb-2 text-muted">${movie.year}</h6>
+//     //                         <p class="card-text">${movie.plot}</p>
+//     //                         <div class="card-footer"><img src="${movie.poster}" alt="${movie.title} poster" width="200px"></div>
+//     //                   </div>
+//     //                 </div>`)
+//     //         }
+//     //     }
+//
+//     // })
+//     // $('#moviePoster').append(this);
+//     console.log(event);
+// })
+//
+// })

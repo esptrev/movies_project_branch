@@ -4,14 +4,63 @@
 	<meta charset="UTF-8">
 	<title>The Best Movie Project</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-
+	<link rel="stylesheet" href="movieproject.css">
 </head>
 <body>
 <h1 id="loadingScreen">LOADING......</h1>
+<!--Search Movie Box/Buttom-->
 <input id="searchBox" type="text" placeholder="Search for a movie">
 <label for="searchBox"></label>
 <button id="searchButton">Search</button>
+<!--Delete a Movie Box/Button-->
+<input id="deleteBox" type="text" placeholder="Delete a Movie">
+<label for="deleteBox"></label>
+<button id="deleteButton">Delete</button>
+
+<!--Div for Movie Posters Append to-->
 <div id="movieSearchDiv"></div>
+<!--Button to show Add a Movie Form-->
+<button id="showAddMovieForm">Add a Movie!</button>
+<!--Add a Movie Form-->
+<form id="addAMovieForm" class="hide">
+	<input id="addTitle" type="text" placeholder="Title">
+	<label for="addTitle"></label>
+	<input id="addDirector" type="text" placeholder="Director">
+	<label for="addDirector"></label>
+	<input id="addGenres" type="text" placeholder="Genres">
+	<label for="addGenres"></label>
+	<input id="addPlot" type="text" placeholder="Plot">
+	<label for="addPlot"></label>
+	<input id="addPoster" type="text" placeholder="Poster">
+	<label for="addPoster"></label>
+	<input id="addRating" type="text" placeholder="Rating">
+	<label for="addRating"></label>
+	<input id="addYear" type="text" placeholder="Year">
+	<label for="addYear"></label>
+	<button type="submit">Submit New Movie</button>
+</form>
+<!--Button to show Add a Movie Form-->
+<button id="showEditMovieForm">Edit a Movie!</button>
+<!--Add a Movie Form-->
+<form id="editAMovieForm">
+	<input id="editTitle" type="text" placeholder="Title">
+	<label for="editTitle"></label>
+	<input id="editDirector" type="text" placeholder="Director">
+	<label for="editDirector"></label>
+	<input id="editGenres" type="text" placeholder="Genres">
+	<label for="editGenres"></label>
+	<input id="editPlot" type="text" placeholder="Plot">
+	<label for="editPlot"></label>
+	<input id="editPoster" type="text" placeholder="Poster">
+	<label for="editPoster"></label>
+	<input id="editRating" type="text" placeholder="Rating">
+	<label for="editRating"></label>
+	<input id="editYear" type="text" placeholder="Year">
+	<label for="editYear"></label>
+	<button type="submit">Edit Movie</button>
+</form>
+
+<div id="moviePoster"></div>
 
 
 

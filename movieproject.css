@@ -1,0 +1,9 @@
+/*img{*/
+/*    filter: blur(8px);*/
+/*    -webkit-filter: blur(8px);*/
+
+/*}*/
+.hide{
+    visibility: hidden;
+    display: none;
+}
