@@ -10,10 +10,15 @@ const MOVIE_URL = `https://lateral-charming-rice.glitch.me/movies`;
          })
 }
 
-function addAMovie(title,director){
+function addAMovie(title,director,genres,plot,poster,rating,year){
     const MOVIE_INFO = {
         title: title,
         director: director,
+        genre: genres,
+        plot: plot,
+        poster: poster,
+        rating: rating,
+        year: year,
     }
 
     const OPTIONS = {
@@ -78,8 +83,12 @@ $('#searchButton').click(populateMovie)
 // setTimeout(fetchAllMovies, 1000)
 
 
+     // deleteAMovie(6);
+     // deleteAMovie(258);
+     // deleteAMovie(262);
 
- // deleteAMovie(258);
+
+
 
 
 
@@ -98,7 +107,7 @@ $('#searchButton').click(populateMovie)
 
 
  // editMovie(6,'EDitMovieTEst', 'wesleyB');
-// addAMovie('updated new movie', 'wesley')
+// addAMovie();
 // fetchAllMovies();
 
 })();
