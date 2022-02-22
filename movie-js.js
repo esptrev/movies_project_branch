@@ -71,12 +71,11 @@
         }
         return fetchAllMovies().then(function (allMovies) {
             for (const movie of allMovies) {
-                if (movie.title === $('#editTitle').val()) {
+                if ($('#editTitle').val() === movie.title) {
                     alert('Movie Edited')
                     let id = parseInt(movie.id)
-                    return fetch(`${MOVIE_URL}/${id}`, OPTIONS)
+                    fetch(`${MOVIE_URL}/${id}`, OPTIONS)
                 }
-
             }
         })
     }
@@ -155,8 +154,9 @@
 
     })
 
-    $('#editAMovieForm').submit(function (e) {
-        e.preventDefault();
+    $('#editMovieButton').click(function () {
+        // e.preventDefault();
+        alert('form submitted');
         if ($('#editTitle').val() === '') {
             alert('Please Enter Title');
             return;
@@ -193,23 +193,23 @@
                 if (movie.title === $('#selectTitle').val()) {
                     $('#oldMovieInfo').append(`
 <!--//htmlformat--> 
-<form id="editAMovieForm">
-\t <span>Movie Title: </span><input id="editTitle" type="text" value=${movie.title}>
-\t<label for="editTitle"></label>
-\t <span>Director: </span><input id="editDirector" type="text" value=${movie.director}><br>
-\t<label for="editDirector"></label>
-\t<span>Genre: </span><input id="editGenres" type="text" value=${movie.genre}>
-\t<label for="editGenres"></label>
-\t<span>Plot: </span><input id="editPlot" type="text" value=${movie.plot}><br>
-\t<label for="editPlot"></label>
-\<tspan>Poster: </tspan><input id="editPoster" type="text" value=${movie.poster}>
-\t<label for="editPoster"></label>
-\<tspan>Rating: </tspan><input id="editRating" type="text" value=${movie.rating}><br>
-\t<label for="editRating"></label>
-\<tspan>Year: </tspan><input id="editYear" type="text" value=${movie.year}>
-\t<label for="editYear"></label>
-\t<button type="submit">Edit Movie</button>
-</form>`)
+<div id="editAMovieForm">
+<span>Movie Title: </span><input id="editTitle" type="text" value=${movie.title}>
+<label for="editTitle"></label>
+<span>Director: </span><input id="editDirector" type="text" value=${movie.director}><br>
+<label for="editDirector"></label>
+<span>Genre: </span><input id="editGenres" type="text" value=${movie.genre}>
+<label for="editGenres"></label>
+<span>Plot: </span><input id="editPlot" type="text" value=${movie.plot}><br>
+<label for="editPlot"></label>
+<tspan>Poster: </tspan><input id="editPoster" type="text" value=${movie.poster}>
+<label for="editPoster"></label>
+<tspan>Rating: </tspan><input id="editRating" type="text" value=${movie.rating}><br>
+<label for="editRating"></label>
+<tspan>Year: </tspan><input id="editYear" type="text" value=${movie.year}>
+<label for="editYear"></label>
+
+</div>`)
                 }
             }
         })
