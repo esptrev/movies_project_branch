@@ -1,5 +1,32 @@
 (function () {
+
     const MOVIE_URL = `https://lateral-charming-rice.glitch.me/movies`;
+
+    function getOMDb(movieTitle){
+      return  fetch(`http://www.omdbapi.com/?t=${movieTitle}&apikey=${TREVOR_OMDb_key}`)
+            .then(function (data){
+                // console.log(data);
+                return data.json();
+            }).then(function (data){
+            // console.log(data);
+                return data;
+        }).then(function (data){
+            // console.log(data);
+            let title = data.Title;
+            let director = data.Director;
+            let genres = data.Genre;
+            let plot = data.Plot;
+            let poster = data.Poster;
+            let rating = data.Rating;
+            let year = data.Year;
+         return   addAMovie(title, director, genres, plot, poster, rating, year);
+        })
+    }
+
+
+    // getOMDb('it').then(function (){
+    //     populateMovieList();
+    // });
 
     function fetchAllMovies() {
         return fetch(MOVIE_URL)
@@ -33,7 +60,7 @@
         return fetch(MOVIE_URL, OPTIONS)
             .then(function (res) {
                 alert('New Movie Posted')
-            })
+            }).then(populateMovieList);
     }
 
     function deleteAMovie(title) {
@@ -42,10 +69,12 @@
         }
         return fetchAllMovies().then(function (allMovies) {
             for (const movie of allMovies) {
-                if (movie.title.toLowerCase() === title.toLowerCase()) {
+                if (movie.title.toLowerCase() === title) {
                     alert('Movie Deleted')
                     let id = parseInt(movie.id)
                     fetch(`${MOVIE_URL}/${id}`, OPTIONS)
+                        .then(populateMovieList)
+                    ;
                 }
 
             }
@@ -107,7 +136,7 @@
 // setTimeout(fetchAllMovies, 1000)
 
 
-    //  deleteAMovie(282);
+      // deleteAMovie(301);
 
     function populateMovieList() {
         $("#moviePoster").html('');
@@ -135,23 +164,11 @@
     });
 
 
-    $('#addAMovieForm').submit(function (e) {
-        e.preventDefault();
-        if ($('#addTitle').val() === '') {
-            alert('Please Enter Title');
-            return;
-        }
-        let title = $('#addTitle').val();
-        let director = $('#addDirector').val();
-        let genres = $('#addGenres').val();
-        let plot = $('#addPlot').val();
-        let poster = $('#addPoster').val();
-        let rating = $('#addRating').val();
-        let year = $('#addYear').val();
-        addAMovie(title, director, genres, plot, poster, rating, year).then(function () {
-            populateMovieList();
-        });
-
+    $('#addMovieButton').click(function (e) {
+        let title = $('#addTitle').val().split(' ')
+        title = title.join('+');
+        getOMDb(title);
+        $('#addMovieModel').addClass('hide')
     })
 
     $('#editMovieButton').click(function () {
@@ -176,14 +193,13 @@
 
 
     $("#showAddMovieForm").click(function () {
-        $("#addAMovieForm").toggleClass('hide')
+        $("#addMovieModel").toggleClass('hide')
     })
 
     $('#deleteButton').click(function () {
         let title = $('#deleteBox').val();
-        deleteAMovie(title).then(function () {
-            populateMovieList();
-        });
+        deleteAMovie(title)
+
     })
 
     $('#editMovieButton').click(function (){
@@ -191,6 +207,9 @@
     })
     $('#closeEditWindowButton').click(function (){
         $('#editMovieModel').addClass('hide');
+    })
+    $("#closeAddWindowButton").click(function (){
+        $("#addMovieModel").addClass('hide');
     })
 
     $('#showEditMovieForm').click(function () {
@@ -202,19 +221,19 @@
                   return  $('#oldMovieInfo').append(`
 <!--//htmlformat--> 
 <div id="editAMovieForm">
-<span>Movie Title: </span><input class="m-2" id="editTitle" type="text" value=${movie.title}>
+<span>Movie Title: </span><input class="m-2" id="editTitle" type="text" value='${movie.title}'>
 <label for="editTitle"></label>
-<span>Director: </span><input class="m-2" id="editDirector" type="text" value=${movie.director}><br>
+<span>Director: </span><input class="m-2" id="editDirector" type="text" value='${movie.director}'><br>
 <label for="editDirector"></label>
-<span>Genre: </span><input class="m-2" id="editGenres" type="text" value=${movie.genre}>
+<span>Genre: </span><input class="m-2" id="editGenres" type="text" value='${movie.genre}'>
 <label for="editGenres"></label>
-<span>Plot: </span><input class="m-2" id="editPlot" type="text" value=${movie.plot}><br>
+<span>Plot: </span><input class="m-2" id="editPlot" type="text" value='${movie.plot}'><br>
 <label for="editPlot"></label>
-<tspan>Poster: </tspan><input class="m-2" id="editPoster" type="text" value=${movie.poster}>
+<tspan>Poster: </tspan><input class="m-2" id="editPoster" type="text" value='${movie.poster}'>
 <label for="editPoster"></label>
-<tspan>Rating: </tspan><input class="m-2" id="editRating" type="text" value=${movie.rating}><br>
+<tspan>Rating: </tspan><input class="m-2" id="editRating" type="text" value='${movie.rating}'><br>
 <label for="editRating"></label>
-<tspan>Year: </tspan><input class="m-2" id="editYear" type="text" value=${movie.year}>
+<tspan>Year: </tspan><input class="m-2" id="editYear" type="text" value='${movie.year}'>
 <label for="editYear"></label>
 
 </div>`)

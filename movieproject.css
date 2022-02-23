@@ -25,6 +25,16 @@ h1{
     width: 650px;
     height: 275px;
 }
+#addMovieModel{
+    position: absolute;
+    background-color: gray;
+    top: 250px;
+    left: 250px;
+    /*display: flex;*/
+    /*justify-content: space-evenly;*/
+    width: 300px;
+    height: 100px;
+}
 body{
     position: relative;
 }
@@ -43,4 +53,19 @@ body{
     width: 195px;
     margin: 6px;
     border: solid grey 4px;
+}
+#addMovieButton{
+    position: absolute;
+    left: 4px;
+    bottom: 4px;
+}
+#closeAddWindowButton{
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+}
+#addTitle{
+    margin-left: 60px;
+    margin-top: 10px;
+
 }
