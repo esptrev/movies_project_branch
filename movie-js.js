@@ -136,14 +136,14 @@
 // setTimeout(fetchAllMovies, 1000)
 
 
-      // deleteAMovie(301);
+        // deleteAMovie(301);
 
     function populateMovieList() {
         $("#moviePoster").html('');
         fetchAllMovies().then(function (allMovies) {
             for (const movie of allMovies) {
                 if (movie.poster !== '') {
-                    $('#moviePoster').append(`<img class="posters" src="${movie.poster}" alt="${movie.title} poster">`)
+                    $('#moviePoster').append(`${movie.title}<img class="posters" src="${movie.poster}" alt="${movie.title} poster">`)
                 }
             }
             console.log(allMovies)
@@ -156,7 +156,7 @@
     fetchAllMovies().then(function (allMovies) {
         for (const movie of allMovies) {
             if (movie.poster !== '') {
-                $('#moviePoster').append(`<img class="posters" src="${movie.poster}" alt="${movie.title} poster" width="200px">`)
+                $('#moviePoster').append(`<img title="${movie.title}" class="posters" src="${movie.poster}" alt="${movie.title} poster" width="200px">`)
             }
         }
         console.log(allMovies)
@@ -212,50 +212,73 @@
         $("#addMovieModel").addClass('hide');
     })
 
-    $('#showEditMovieForm').click(function () {
+    $('#dblclickEditbutton').click(function () {
+        $('#dblClickModal').addClass('hide');
         $('#oldMovieInfo').html('')
         fetchAllMovies().then(function (allMovies) {
             for (const movie of allMovies) {
-                if (movie.title.toLowerCase() === $('#selectTitle').val().toLowerCase()) {
+                if (movie.title.toLowerCase() === targetTitle.toLowerCase()) {
                     $('#editMovieModel').removeClass('hide');
                   return  $('#oldMovieInfo').append(`
 <!--//htmlformat--> 
 <div id="editAMovieForm">
-<span>Movie Title: </span><input class="m-2" id="editTitle" type="text" value='${movie.title}'>
+<span>Title: </span><input class="m-2 col-4" id="editTitle" type="text" value='${movie.title}'>
 <label for="editTitle"></label>
-<span>Director: </span><input class="m-2" id="editDirector" type="text" value='${movie.director}'><br>
+<span>Director: </span><input class="m-2 col-4" id="editDirector" type="text" value='${movie.director}'><br>
 <label for="editDirector"></label>
-<span>Genre: </span><input class="m-2" id="editGenres" type="text" value='${movie.genre}'>
-<label for="editGenres"></label>
-<span>Plot: </span><input class="m-2" id="editPlot" type="text" value='${movie.plot}'><br>
-<label for="editPlot"></label>
-<tspan>Poster: </tspan><input class="m-2" id="editPoster" type="text" value='${movie.poster}'>
+<tspan>Poster: </tspan><input class="m-2 col-10" id="editPoster" type="text" value='${movie.poster}'>
 <label for="editPoster"></label>
-<tspan>Rating: </tspan><input class="m-2" id="editRating" type="text" value='${movie.rating}'><br>
+<tspan>Rating: </tspan><input class="m-2 col-4" id="editRating" type="text" value='${movie.rating}'>
 <label for="editRating"></label>
-<tspan>Year: </tspan><input class="m-2" id="editYear" type="text" value='${movie.year}'>
+<tspan>Year: </tspan><input class="m-2 col-4" id="editYear" type="text" value='${movie.year}'><br>
 <label for="editYear"></label>
-
+<span>Genre: </span>
+<input class="m-2 col-4" id="editGenres" type="text" value='${movie.genre}'>
+<label for="editGenres"></label>
+<span>Plot: </span><textarea rows="2" cols="60" id="editPlot"  placeholder='${movie.plot}'></textarea>
 </div>`)
                 }
             }
         })
     })
+let targetTitle;
+$('#moviePoster').dblclick(function (event){
+    $('#dblClickDiv').html('')
+    let target = event.target;
+    let targetTitle = target.title
+    console.log(targetTitle);
+    $('#dblClickModal').removeClass('hide');
+    $('#dblClickDiv').append(target);
+})
+    $('#dblclickCloseButton').click(function (event){
+        $('#dblClickModal').addClass('hide');
+    })
+
+    $('#moviePoster').click(function (event){
+        $('#dblClickModal').addClass('hide');
+    })
 
 
-    // addAMovie($('#addTitle').val(), $('#addDirector').val(),$('#addGenres').val(),$('#addPlot').val(),$('#addPoster').val(),$('#addRating').val(),$('#addYear').val())
-    // fetchAllMovies().then(function (allMovies) {
-    //     $('#movieSearchDiv').append(`${allMovies}`);
-    //
-    // });
-
-
-    // editMovie(6,'EDitMovieTEst', 'wesleyB');
-// addAMovie();
-// fetchAllMovies();
-
+    // $('#selectTitle').val()
 })();
 
+
+// <div className="col-12">
+//     <input type="checkbox" id="Action" name="Action" value="Action"><label htmlFor="action">Action</label>
+//         <input type="checkbox" id="Comedy" name="Comedy" value="Comedy"><label htmlFor="Comedy">Comedy</label>
+//             <input type="checkbox" id="Drama" name="Drama" value="Drama"><label htmlFor="Drama">Drama</label>
+//                 <input type="checkbox" id="Western" name="Western" value="Western"><label
+//                     htmlFor="Western">Western</label>
+//                     <input type="checkbox" id="Sci-Fi" name="Sci-Fi" value="Sci-Fi"><label
+//                         htmlFor="Sci-Fi">Sci-Fi</label>
+//                         <input type="checkbox" id="Horror" name="Horror" value="Horror"><label
+//                             htmlFor="Horror">Horror</label>
+//                             <input type="checkbox" id="Bio" name="Bio" value="Bio"><label htmlFor="Bio">Bio</label>
+//                                 <input type="checkbox" id="Crime" name="Crime" value="Crime"><label
+//                                     htmlFor="Crime">Crime</label>
+//                                     <input type="checkbox" id="Thriller" name="Thriller" value="Thriller"><label
+//                                         htmlFor="Thriller">Thriller</label>
+// </div>
 
 // fetch('data')
 //     //     .then(function (res){
@@ -295,3 +318,13 @@
 // })
 //
 // })
+// addAMovie($('#addTitle').val(), $('#addDirector').val(),$('#addGenres').val(),$('#addPlot').val(),$('#addPoster').val(),$('#addRating').val(),$('#addYear').val())
+// fetchAllMovies().then(function (allMovies) {
+//     $('#movieSearchDiv').append(`${allMovies}`);
+//
+// });
+
+
+// editMovie(6,'EDitMovieTEst', 'wesleyB');
+// addAMovie();
+// fetchAllMovies();
