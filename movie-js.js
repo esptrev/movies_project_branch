@@ -42,7 +42,7 @@
         }
         return fetchAllMovies().then(function (allMovies) {
             for (const movie of allMovies) {
-                if (movie.title === title) {
+                if (movie.title.toLowerCase() === title.toLowerCase()) {
                     alert('Movie Deleted')
                     let id = parseInt(movie.id)
                     fetch(`${MOVIE_URL}/${id}`, OPTIONS)
@@ -71,7 +71,7 @@
         }
         return fetchAllMovies().then(function (allMovies) {
             for (const movie of allMovies) {
-                if ($('#editTitle').val() === movie.title) {
+                if ($('#editTitle').val().toLowerCase() === movie.title.toLowerCase()) {
                     alert('Movie Edited')
                     let id = parseInt(movie.id)
                     fetch(`${MOVIE_URL}/${id}`, OPTIONS)
@@ -87,7 +87,7 @@
                 return res.json()
             }).then(function (data) {
                 for (const movie of data) {
-                    if (movie.title === $('#searchBox').val()) {
+                    if (movie.title.toLowerCase() === $('#searchBox').val().toLowerCase()) {
                         $('#movieSearchDiv').append(`<div class="card" style="width: 18rem;">
                          <div class="card-body">
                              <h5 class="card-title">${movie.title}</h5>
@@ -114,7 +114,7 @@
         fetchAllMovies().then(function (allMovies) {
             for (const movie of allMovies) {
                 if (movie.poster !== '') {
-                    $('#moviePoster').append(`<img class="posters" src="${movie.poster}" alt="${movie.title} poster" width="200px">`)
+                    $('#moviePoster').append(`<img class="posters" src="${movie.poster}" alt="${movie.title} poster">`)
                 }
             }
             console.log(allMovies)
@@ -186,27 +186,35 @@
         });
     })
 
+    $('#editMovieButton').click(function (){
+        $('#editMovieModel').addClass('hide');
+    })
+    $('#closeEditWindowButton').click(function (){
+        $('#editMovieModel').addClass('hide');
+    })
+
     $('#showEditMovieForm').click(function () {
         $('#oldMovieInfo').html('')
         fetchAllMovies().then(function (allMovies) {
             for (const movie of allMovies) {
-                if (movie.title === $('#selectTitle').val()) {
-                    $('#oldMovieInfo').append(`
+                if (movie.title.toLowerCase() === $('#selectTitle').val().toLowerCase()) {
+                    $('#editMovieModel').removeClass('hide');
+                  return  $('#oldMovieInfo').append(`
 <!--//htmlformat--> 
 <div id="editAMovieForm">
-<span>Movie Title: </span><input id="editTitle" type="text" value=${movie.title}>
+<span>Movie Title: </span><input class="m-2" id="editTitle" type="text" value=${movie.title}>
 <label for="editTitle"></label>
-<span>Director: </span><input id="editDirector" type="text" value=${movie.director}><br>
+<span>Director: </span><input class="m-2" id="editDirector" type="text" value=${movie.director}><br>
 <label for="editDirector"></label>
-<span>Genre: </span><input id="editGenres" type="text" value=${movie.genre}>
+<span>Genre: </span><input class="m-2" id="editGenres" type="text" value=${movie.genre}>
 <label for="editGenres"></label>
-<span>Plot: </span><input id="editPlot" type="text" value=${movie.plot}><br>
+<span>Plot: </span><input class="m-2" id="editPlot" type="text" value=${movie.plot}><br>
 <label for="editPlot"></label>
-<tspan>Poster: </tspan><input id="editPoster" type="text" value=${movie.poster}>
+<tspan>Poster: </tspan><input class="m-2" id="editPoster" type="text" value=${movie.poster}>
 <label for="editPoster"></label>
-<tspan>Rating: </tspan><input id="editRating" type="text" value=${movie.rating}><br>
+<tspan>Rating: </tspan><input class="m-2" id="editRating" type="text" value=${movie.rating}><br>
 <label for="editRating"></label>
-<tspan>Year: </tspan><input id="editYear" type="text" value=${movie.year}>
+<tspan>Year: </tspan><input class="m-2" id="editYear" type="text" value=${movie.year}>
 <label for="editYear"></label>
 
 </div>`)

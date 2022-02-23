@@ -3,7 +3,44 @@
 /*    -webkit-filter: blur(8px);*/
 
 /*}*/
+body{
+    background-image: url("pexels-megha-mangal-806880.jpg");
+    background-size: contain;
+
+}
+h1{
+    text-align: center;
+}
 .hide{
     visibility: hidden;
     display: none;
+}
+#editMovieModel{
+    position: absolute;
+    background-color: gray;
+    top: 250px;
+    left: 250px;
+    /*display: flex;*/
+    /*justify-content: space-evenly;*/
+    width: 650px;
+    height: 275px;
+}
+body{
+    position: relative;
+}
+#closeEditWindowButton{
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+#editMovieButton{
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+}
+.posters{
+    height: 295px;
+    width: 195px;
+    margin: 6px;
+    border: solid grey 4px;
 }
