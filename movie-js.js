@@ -142,10 +142,10 @@
 
     function populateMovieList() {
         $("#moviePoster").html('');
-        fetchAllMovies().then(function (allMovies) {
+      return  fetchAllMovies().then(function (allMovies) {
             for (const movie of allMovies) {
                 if (movie.poster !== '') {
-                    $('#moviePoster').append(`${movie.title}<img class="posters" src="${movie.poster}" alt="${movie.title} poster">`)
+                    $('#moviePoster').append(`<img title="${movie.title}" class="posters" src="${movie.poster}" alt="${movie.title} poster">`)
                 }
             }
             console.log(allMovies)
@@ -154,16 +154,16 @@
 
     }
 
-
-    fetchAllMovies().then(function (allMovies) {
-        for (const movie of allMovies) {
-            if (movie.poster !== '') {
-                $('#moviePoster').append(`<img title="${movie.title}" class="posters" src="${movie.poster}" alt="${movie.title} poster" width="200px">`)
-            }
-        }
-        console.log(allMovies)
-        $("#loadingScreen").text("Movies are loaded!")
-    });
+populateMovieList();
+//     fetchAllMovies().then(function (allMovies) {
+//         for (const movie of allMovies) {
+//             if (movie.poster !== '') {
+//                 $('#moviePoster').append(`<img title="${movie.title}" class="posters" src="${movie.poster}" alt="${movie.title} poster" width="200px">`)
+//             }
+//         }
+//         console.log(allMovies)
+//         $("#loadingScreen").text("Movies are loaded!")
+//     });
 
 
     $('#addMovieButton').click(function (e) {
@@ -173,13 +173,38 @@
         $('#addMovieModel').addClass('hide')
     })
 
+    // $('#editMovieButton').click(function () {
+    //     // e.preventDefault();
+    //     alert('form submitted');
+    //     if ($('#editTitle').val() === '') {
+    //         alert('Please Enter Title');
+    //         return;
+    //     }
+    //     let title = $('#editTitle').val();
+    //     let director = $('#editDirector').val();
+    //     let genres = $('#editGenres').val();
+    //     let plot = $('#editPlot').val();
+    //     let poster = $('#editPoster').val();
+    //     let rating = $('#editRating').val();
+    //     let year = $('#editYear').val();
+    //     editMovie(title, director, genres, plot, poster, rating, year).then(function () {
+    //         populateMovieList();
+    //     });
+    //
+    // })
+
+
+    $("#showAddMovieForm").click(function () {
+        $("#addMovieModel").toggleClass('hide')
+    })
+
+    $('#dblclickDeleteButton').click(function () {
+        let title = $('#deleteBox').val();
+        deleteAMovie(title)
+
+    })
+
     $('#editMovieButton').click(function () {
-        // e.preventDefault();
-        alert('form submitted');
-        if ($('#editTitle').val() === '') {
-            alert('Please Enter Title');
-            return;
-        }
         let title = $('#editTitle').val();
         let director = $('#editDirector').val();
         let genres = $('#editGenres').val();
@@ -188,24 +213,11 @@
         let rating = $('#editRating').val();
         let year = $('#editYear').val();
         editMovie(title, director, genres, plot, poster, rating, year).then(function () {
-            populateMovieList();
-        });
+            populateMovieList().then(function (){
+                $('#editMovieModel').addClass('hide');
+            });
 
-    })
-
-
-    $("#showAddMovieForm").click(function () {
-        $("#addMovieModel").toggleClass('hide')
-    })
-
-    $('#deleteButton').click(function () {
-        let title = $('#deleteBox').val();
-        deleteAMovie(title)
-
-    })
-
-    $('#editMovieButton').click(function (){
-        $('#editMovieModel').addClass('hide');
+        })
     })
     $('#closeEditWindowButton').click(function (){
         $('#editMovieModel').addClass('hide');
@@ -213,6 +225,7 @@
     $("#closeAddWindowButton").click(function (){
         $("#addMovieModel").addClass('hide');
     })
+
     var targetTitle;
     $('#moviePoster').dblclick(function (event){
         $('#dblClickDiv').html('')
@@ -220,7 +233,13 @@
         targetTitle = target.title
         console.log(targetTitle);
         $('#dblClickModal').removeClass('hide');
-        $('#dblClickDiv').append(target);
+        fetchAllMovies().then(function (allMovies){
+            for (const movie of allMovies) {
+                if(movie.poster === target.src){
+                    $('#dblClickDiv').append(`<img class="posters" src='${movie.poster}'>`);
+                }
+            }
+        })
     })
     $('#dblclickCloseButton').click(function (event){
         $('#dblClickModal').addClass('hide');
@@ -236,7 +255,7 @@
         $('#oldMovieInfo').html('')
         fetchAllMovies().then(function (allMovies) {
             for (const movie of allMovies) {
-                console.log(movie.title);
+                // console.log(movie.title);
                 console.log(targetTitle);
                 if (movie.title.toLowerCase() === targetTitle.toLowerCase()) {
                     $('#editMovieModel').removeClass('hide');
