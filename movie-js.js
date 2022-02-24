@@ -147,6 +147,7 @@
         fetchAllMovies().then(function (allMovies) {
             for (const movie of allMovies) {
                 if (movie.title.toLowerCase() === $('#searchBox').val().toLowerCase()) {
+                    $("#dblClickDiv").html("")
                     $('#dblClickDiv').append(`<div class="card" style="width: 18rem;">
                          <div class="card-body">
                              <h5 class="card-title">${movie.title}</h5>
@@ -299,7 +300,7 @@
                 // console.log(movie.title);
                 console.log(targetTitle);
                 if (movie.title.toLowerCase() === targetTitle.toLowerCase()) {
-                    alert(movie.rating);
+                    // alert(movie.rating);
                     $('#editMovieModel').removeClass('hide');
                     return $('#oldMovieInfo').append(`
 <!--//htmlformat--> 
