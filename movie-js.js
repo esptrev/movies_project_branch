@@ -139,8 +139,24 @@
 
 
     $('#searchButton').click(function (){
-        populateMovie();
-        $('#closeSearchWindow').removeClass('hide');
+        // populateMovie();
+        // $('#closeSearchWindow').removeClass('hide');
+        $('#dblClickModal').removeClass('hide');
+        $('html,body').animate({scrollTop: $('#dblClickModal').offset().top}, 'fast')
+        fetchAllMovies().then(function (allMovies) {
+            for (const movie of allMovies) {
+                if (movie.title.toLowerCase() === $('#searchBox').val().toLowerCase()) {
+                    $('#dblClickDiv').append(`<div class="card" style="width: 18rem;">
+                         <div class="card-body">
+                             <h5 class="card-title">${movie.title}</h5>
+                             <h6 class="card-subtitle mb-2 text-muted">${movie.year}</h6>
+                             <p class="card-text">${movie.plot}</p>
+                             <div class="card-footer"><img src="${movie.poster}" alt="${movie.title} poster" width="200px"></div>
+                       </div>
+                     </div>`);
+                }
+            }
+        })
     })
 
     $('#closeSearchWindow').click(function (){

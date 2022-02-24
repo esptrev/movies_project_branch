@@ -73,38 +73,42 @@ h1{
     background-image: url("pexels-anna-tis-5633525.jpg");
     top: 250px;
     left: 250px;
-    width: 350px;
-    height:550px;
-    padding-top: 2em;
-    padding-left: 2.75em;
+    width: auto;
+    height:auto;
+    /*padding-top: 2em;*/
+    /*padding-left: 2.75em;*/
     border: solid #4f4c4c 4px;
     border-radius: 2px;
+    padding-top: 3em;
+    padding-right: 3em;
+    padding-left: 3em;
 
 }
 #dblclickEditbutton{
-    position: absolute;
-    right: 10px;
+    /*position: absolute;*/
+    /*right: 10px;*/
     bottom: 10px;
     text-align: center;
 }
 #dblclickCloseButton{
-    position: absolute;
-    left: 10px;
+   /*/ position: absolute;*/
+    /*left: 10px;*/
     bottom: 10px;
     text-align: center;
 }
 #dblclickDeleteButton{
-    position: absolute;
-    left: 110px;
+    /*position: absolute;*/
+    /*left: 110px;*/
     bottom: 10px;
     text-align: center;
 }
 #dblClickRow{
     width: 100%;
     display: flex;
-    justify-items: center;
+    justify-items: flex-end;
     flex-direction: row;
     align-items: end;
+    flex-wrap: wrap;
 }
 #dblClickDiv{
     width: 100%;
@@ -133,5 +137,16 @@ button{
     height: 1.5em;
     border-radius: 4px;
     margin-left: .5em;
+}
+
+.card{
+    margin: auto;
+}
+#modalButtonRow{
+    display: flex;
+    height: 2em;
+    align-items: flex-end;
+    margin-top: 2em;
+    justify-content: space-evenly;
 }
 
