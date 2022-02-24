@@ -11,6 +11,12 @@ body{
 h1{
     text-align: center;
 }
+#mainButtonDiv{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
 .hide{
     visibility: hidden;
     display: none;
@@ -127,3 +133,4 @@ button{
     height: 1.5em;
     border-radius: 4px;
 }
+

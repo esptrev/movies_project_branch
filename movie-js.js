@@ -80,6 +80,7 @@
             }
         })
     }
+    // deleteAMovie(301);
 
     function editMovie(title, director, genres, plot, poster, rating, year) {
         const MOVIE_INFO = {
@@ -112,6 +113,7 @@
     function populateMovie() {
         $('#movieSearchDiv').html('');
         return fetch(`${MOVIE_URL}`)
+
             .then(function (res) {
                 return res.json()
             }).then(function (data) {
@@ -136,7 +138,7 @@
 // setTimeout(fetchAllMovies, 1000)
 
 
-        // deleteAMovie(301);
+
 
     function populateMovieList() {
         $("#moviePoster").html('');
@@ -211,12 +213,31 @@
     $("#closeAddWindowButton").click(function (){
         $("#addMovieModel").addClass('hide');
     })
+    var targetTitle;
+    $('#moviePoster').dblclick(function (event){
+        $('#dblClickDiv').html('')
+        let target = event.target;
+        targetTitle = target.title
+        console.log(targetTitle);
+        $('#dblClickModal').removeClass('hide');
+        $('#dblClickDiv').append(target);
+    })
+    $('#dblclickCloseButton').click(function (event){
+        $('#dblClickModal').addClass('hide');
+    })
+
+    $('#moviePoster').click(function (event){
+        $('#dblClickModal').addClass('hide');
+    })
+
 
     $('#dblclickEditbutton').click(function () {
         $('#dblClickModal').addClass('hide');
         $('#oldMovieInfo').html('')
         fetchAllMovies().then(function (allMovies) {
             for (const movie of allMovies) {
+                console.log(movie.title);
+                console.log(targetTitle);
                 if (movie.title.toLowerCase() === targetTitle.toLowerCase()) {
                     $('#editMovieModel').removeClass('hide');
                   return  $('#oldMovieInfo').append(`
@@ -241,22 +262,8 @@
             }
         })
     })
-let targetTitle;
-$('#moviePoster').dblclick(function (event){
-    $('#dblClickDiv').html('')
-    let target = event.target;
-    let targetTitle = target.title
-    console.log(targetTitle);
-    $('#dblClickModal').removeClass('hide');
-    $('#dblClickDiv').append(target);
-})
-    $('#dblclickCloseButton').click(function (event){
-        $('#dblClickModal').addClass('hide');
-    })
 
-    $('#moviePoster').click(function (event){
-        $('#dblClickModal').addClass('hide');
-    })
+
 
 
     // $('#selectTitle').val()

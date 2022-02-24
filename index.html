@@ -10,19 +10,26 @@
 </head>
 <body>
 <h1 id="loadingScreen">LOADING......</h1>
+<!--<div style='position:relative; padding-bottom:calc(76.67% + 44px)'><iframe src='https://gfycat.com/ifr/AntiqueLightheartedIbizanhound' frameborder='0' scrolling='no' width= '50%' height='50%' style='position:absolute;top:500px;left:500px;' allowfullscreen></iframe></div><p> <a href="https://gfycat.com/antiquelightheartedibizanhound-countdown-movie-film">via Gfycat</a></p>-->
 <!--Search Movie Box/Buttom-->
-<input id="searchBox" type="text" placeholder="Search for a movie">
-<label for="searchBox"></label>
-<button id="searchButton">Search</button>
-<!--Delete a Movie Box/Button-->
-<input id="deleteBox" type="text" placeholder="Delete a Movie">
-<label for="deleteBox"></label>
-<button id="deleteButton">Delete</button>
+<div id="mainButtonDiv" class="row">
 
+	<input id="searchBox" type="text" placeholder="Search for a movie"><label for="searchBox"></label>
+	<button id="searchButton">Search</button>
+
+	<!--Delete a Movie Box/Button-->
+	<input id="deleteBox" type="text" placeholder="Delete a Movie"><label for="deleteBox"></label>
+	<button id="deleteButton">Delete</button>
+	<input id="selectTitle" type="text" placeholder="Select Movie to Edit">
+	<label for="selectTitle"></label>
+	<button id="showEditMovieForm" type="submit">Edit a Movie!</button>
+
+
+	<!--Button to show Add a Movie Form-->
+	<button id="showAddMovieForm">Add a Movie!</button>
+</div>
 <!--Div for Movie Posters Append to-->
 <div id="movieSearchDiv"></div>
-<!--Button to show Add a Movie Form-->
-<button id="showAddMovieForm">Add a Movie!</button>
 <!--Add a Movie Form-->
 <!--Button to show Add a Movie Form-->
 <div class="hide" id="addMovieModel">
@@ -32,9 +39,6 @@
 	<button class="btn-primary" id="addMovieButton" type="submit">Add</button>
 	<button class="btn-success" type="button" id="closeAddWindowButton">Close</button>
 </div>
-<input id="selectTitle" type="text" placeholder="Select Movie to Edit">
-<label for="selectTitle"></label>
-<button id="showEditMovieForm" type="submit">Edit a Movie!</button>
 <div class="hide" id="editMovieModel">
 	<div id="oldMovieInfo"></div>
 	<button class="btn-danger" type="button" id="editMovieButton">Edit Movie</button>
@@ -42,13 +46,12 @@
 
 </div>
 <div class="hide" id="dblClickModal">
+<!--	<div>title year director</div>-->
 	<div id="dblClickDiv"></div>
-
+<!--	<div>plot</div>-->
 		<button class="col-3 btn-primary" type="button" id="dblclickEditbutton">Edit</button>
 		<button class="col-3 btn-success" type="button" id="dblclickCloseButton">Close</button>
 		<button class="col-3 btn-danger" type="button" id="dblclickDeleteButton">Delete </button>
-
-
 
 </div>
 
