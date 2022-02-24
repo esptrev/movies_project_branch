@@ -199,9 +199,10 @@ populateMovieList();
     })
 
     $('#dblclickDeleteButton').click(function () {
-        let title = $('#deleteBox').val();
-        deleteAMovie(title)
-
+        // let title = $('#deleteBox').val();
+        console.log(targetTitle);
+        deleteAMovie(targetTitle);
+        $('#dblClickModal').addClass('hide');
     })
 
     $('#editMovieButton').click(function () {
