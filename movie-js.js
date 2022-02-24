@@ -139,6 +139,7 @@
 
 
     $('#searchButton').click(function (){
+        $('#moviePoster').addClass('blur');
         // populateMovie();
         // $('#closeSearchWindow').removeClass('hide');
         $('#dblClickModal').removeClass('hide');
@@ -154,6 +155,7 @@
                              <div class="card-footer"><img src="${movie.poster}" alt="${movie.title} poster" width="200px"></div>
                        </div>
                      </div>`);
+
                 }
             }
         })
@@ -189,11 +191,14 @@
         title = title.join('+');
         getOMDb(title);
         $('#addMovieModel').addClass('hide')
+        $('#moviePoster').removeClass('blur');
+        $('#addTitle').val('');
     })
 
 
     $("#showAddMovieForm").click(function () {
         $("#addMovieModel").toggleClass('hide')
+        $('#moviePoster').addClass('blur');
     })
 
 
@@ -208,6 +213,7 @@
         editMovie(title, director, genres, plot, poster, rating, year).then(function () {
             populateMovieList().then(function () {
                 $('#editMovieModel').addClass('hide');
+                $('#moviePoster').removeClass('blur');
             });
 
         })
@@ -217,10 +223,12 @@
     })
     $("#closeAddWindowButton").click(function () {
         $("#addMovieModel").addClass('hide');
+        $('#moviePoster').removeClass('blur');
     })
 
     var targetTitle;
     $('#moviePoster').dblclick(function (event) {
+        $('#moviePoster').addClass('blur');
         $('#dblClickDiv').html('')
         let target = event.target;
         targetTitle = target.title
@@ -249,15 +257,18 @@
         alert(targetTitle);
         deleteAMovie(targetTitle);
         $('#dblClickModal').addClass('hide');
+        $('#moviePoster').removeClass('blur');
     })
 
 
     $('#dblclickCloseButton').click(function (event) {
         $('#dblClickModal').addClass('hide');
+        $('#moviePoster').removeClass('blur');
     })
 
     $('#moviePoster').click(function (event) {
         $('#dblClickModal').addClass('hide');
+        $('#moviePoster').removeClass('blur');
     })
 
 

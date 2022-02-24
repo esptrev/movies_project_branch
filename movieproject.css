@@ -1,8 +1,8 @@
-/*img{*/
-/*    filter: blur(8px);*/
-/*    -webkit-filter: blur(8px);*/
+.blur {
+    filter: blur(3px);
+    /*-webkit-filter: blur(8px);*/
 
-/*}*/
+}
 body{
     background-image: url("pexels-anna-tis-5633525.jpg");
     background-size: cover;
@@ -31,6 +31,7 @@ h1{
     width: 650px;
     height: 300px;
     border: #4077b6 solid 4px;
+    z-index: 5;
 }
 #editMovieButton{
     position: absolute;
@@ -53,6 +54,7 @@ h1{
     justify-content: center;
     border: solid red 4px;
     border-radius: 2px;
+    z-index: 5;
 }
 #addMovieButton{
     position: absolute;
@@ -82,6 +84,7 @@ h1{
     padding-top: 3em;
     padding-right: 3em;
     padding-left: 3em;
+    z-index: 5;
 
 }
 #dblclickEditbutton{
@@ -122,6 +125,7 @@ body{
     margin: 6px;
     border: solid #c20303 6px;
     border-radius: 6px;
+
 }
 
 #moviePoster{
@@ -141,6 +145,9 @@ button{
 
 .card{
     margin: auto;
+    background-color: rgba(0, 0, 0, 0.58);
+    color: yellow;
+
 }
 #modalButtonRow{
     display: flex;
