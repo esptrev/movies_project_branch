@@ -2,25 +2,29 @@
 
     const MOVIE_URL = `https://lateral-charming-rice.glitch.me/movies`;
 
-    function getOMDb(movieTitle){
-      return  fetch(`http://www.omdbapi.com/?t=${movieTitle}&apikey=${TREVOR_OMDb_key}`)
-            .then(function (data){
+    function getOMDb(movieTitle) {
+        return fetch(`http://www.omdbapi.com/?t=${movieTitle}&apikey=${TREVOR_OMDb_key}`)
+            .then(function (data) {
                 // console.log(data);
                 return data.json();
-            }).then(function (data){
-            // console.log(data);
+            }).then(function (data) {
+                console.log(data);
+                if (data.Response === 'False') {
+                    alert(`Ooops, We can't find that title!`);
+                    return;
+                }
                 return data;
-        }).then(function (data){
-            // console.log(data);
-            let title = data.Title;
-            let director = data.Director;
-            let genres = data.Genre;
-            let plot = data.Plot;
-            let poster = data.Poster;
-            let rating = data.Rating;
-            let year = data.Year;
-         return   addAMovie(title, director, genres, plot, poster, rating, year);
-        })
+            }).then(function (data) {
+                console.log(data);
+                let title = data.Title;
+                let director = data.Director;
+                let genres = data.Genre;
+                let plot = data.Plot;
+                let poster = data.Poster;
+                let rating = data.Rating;
+                let year = data.Year;
+                return addAMovie(title, director, genres, plot, poster, rating, year);
+            })
     }
 
 
@@ -69,7 +73,7 @@
         }
         return fetchAllMovies().then(function (allMovies) {
             for (const movie of allMovies) {
-                if (movie.title.toLowerCase() === title) {
+                if (movie.title.toLowerCase() === title.toLowerCase()) {
                     alert('Movie Deleted')
                     let id = parseInt(movie.id)
                     fetch(`${MOVIE_URL}/${id}`, OPTIONS)
@@ -80,6 +84,7 @@
             }
         })
     }
+
     // deleteAMovie(301);
 
     function editMovie(title, director, genres, plot, poster, rating, year) {
@@ -133,16 +138,22 @@
     }
 
 
-    $('#searchButton').click(populateMovie)
+    $('#searchButton').click(function (){
+        populateMovie();
+        $('#closeSearchWindow').removeClass('hide');
+    })
+
+    $('#closeSearchWindow').click(function (){
+        $('#movieSearchDiv').addClass('hide');
+        $(this).addClass('hide');
+    })
 
 // setTimeout(fetchAllMovies, 1000)
 
 
-
-
     function populateMovieList() {
         $("#moviePoster").html('');
-      return  fetchAllMovies().then(function (allMovies) {
+        return fetchAllMovies().then(function (allMovies) {
             for (const movie of allMovies) {
                 if (movie.poster !== '') {
                     $('#moviePoster').append(`<img title="${movie.title}" class="posters" src="${movie.poster}" alt="${movie.title} poster">`)
@@ -154,16 +165,7 @@
 
     }
 
-populateMovieList();
-//     fetchAllMovies().then(function (allMovies) {
-//         for (const movie of allMovies) {
-//             if (movie.poster !== '') {
-//                 $('#moviePoster').append(`<img title="${movie.title}" class="posters" src="${movie.poster}" alt="${movie.title} poster" width="200px">`)
-//             }
-//         }
-//         console.log(allMovies)
-//         $("#loadingScreen").text("Movies are loaded!")
-//     });
+    populateMovieList();
 
 
     $('#addMovieButton').click(function (e) {
@@ -173,37 +175,11 @@ populateMovieList();
         $('#addMovieModel').addClass('hide')
     })
 
-    // $('#editMovieButton').click(function () {
-    //     // e.preventDefault();
-    //     alert('form submitted');
-    //     if ($('#editTitle').val() === '') {
-    //         alert('Please Enter Title');
-    //         return;
-    //     }
-    //     let title = $('#editTitle').val();
-    //     let director = $('#editDirector').val();
-    //     let genres = $('#editGenres').val();
-    //     let plot = $('#editPlot').val();
-    //     let poster = $('#editPoster').val();
-    //     let rating = $('#editRating').val();
-    //     let year = $('#editYear').val();
-    //     editMovie(title, director, genres, plot, poster, rating, year).then(function () {
-    //         populateMovieList();
-    //     });
-    //
-    // })
-
 
     $("#showAddMovieForm").click(function () {
         $("#addMovieModel").toggleClass('hide')
     })
 
-    $('#dblclickDeleteButton').click(function () {
-        // let title = $('#deleteBox').val();
-        console.log(targetTitle);
-        deleteAMovie(targetTitle);
-        $('#dblClickModal').addClass('hide');
-    })
 
     $('#editMovieButton').click(function () {
         let title = $('#editTitle').val();
@@ -214,39 +190,57 @@ populateMovieList();
         let rating = $('#editRating').val();
         let year = $('#editYear').val();
         editMovie(title, director, genres, plot, poster, rating, year).then(function () {
-            populateMovieList().then(function (){
+            populateMovieList().then(function () {
                 $('#editMovieModel').addClass('hide');
             });
 
         })
     })
-    $('#closeEditWindowButton').click(function (){
+    $('#closeEditWindowButton').click(function () {
         $('#editMovieModel').addClass('hide');
     })
-    $("#closeAddWindowButton").click(function (){
+    $("#closeAddWindowButton").click(function () {
         $("#addMovieModel").addClass('hide');
     })
 
     var targetTitle;
-    $('#moviePoster').dblclick(function (event){
+    $('#moviePoster').dblclick(function (event) {
         $('#dblClickDiv').html('')
         let target = event.target;
         targetTitle = target.title
-        console.log(targetTitle);
+        // console.log(targetTitle);
         $('#dblClickModal').removeClass('hide');
-        fetchAllMovies().then(function (allMovies){
+        $('html,body').animate({scrollTop: $('#dblClickModal').offset().top}, 'fast')
+        fetchAllMovies().then(function (allMovies) {
             for (const movie of allMovies) {
-                if(movie.poster === target.src){
-                    $('#dblClickDiv').append(`<img class="posters" src='${movie.poster}'>`);
+                if (movie.poster === target.src) {
+                    $('#dblClickDiv').append(`<div class="card" style="width: 18rem;">
+                         <div class="card-body">
+                             <h5 class="card-title">${movie.title}</h5>
+                             <h6 class="card-subtitle mb-2 text-muted">${movie.year}</h6>
+                             <p class="card-text">${movie.plot}</p>
+                             <div class="card-footer"><img src="${movie.poster}" alt="${movie.title} poster" width="200px"></div>
+                       </div>
+                     </div>`);
                 }
             }
         })
     })
-    $('#dblclickCloseButton').click(function (event){
+
+
+    $('#dblclickDeleteButton').click(function () {
+        // let title = $('#deleteBox').val();
+        alert(targetTitle);
+        deleteAMovie(targetTitle);
         $('#dblClickModal').addClass('hide');
     })
 
-    $('#moviePoster').click(function (event){
+
+    $('#dblclickCloseButton').click(function (event) {
+        $('#dblClickModal').addClass('hide');
+    })
+
+    $('#moviePoster').click(function (event) {
         $('#dblClickModal').addClass('hide');
     })
 
@@ -260,7 +254,7 @@ populateMovieList();
                 console.log(targetTitle);
                 if (movie.title.toLowerCase() === targetTitle.toLowerCase()) {
                     $('#editMovieModel').removeClass('hide');
-                  return  $('#oldMovieInfo').append(`
+                    return $('#oldMovieInfo').append(`
 <!--//htmlformat--> 
 <div id="editAMovieForm">
 <span>Title: </span><input class="m-2 col-4" id="editTitle" type="text" value='${movie.title}'>
@@ -282,8 +276,6 @@ populateMovieList();
             }
         })
     })
-
-
 
 
     // $('#selectTitle').val()
@@ -355,3 +347,31 @@ populateMovieList();
 // editMovie(6,'EDitMovieTEst', 'wesleyB');
 // addAMovie();
 // fetchAllMovies();
+//     fetchAllMovies().then(function (allMovies) {
+//         for (const movie of allMovies) {
+//             if (movie.poster !== '') {
+//                 $('#moviePoster').append(`<img title="${movie.title}" class="posters" src="${movie.poster}" alt="${movie.title} poster" width="200px">`)
+//             }
+//         }
+//         console.log(allMovies)
+//         $("#loadingScreen").text("Movies are loaded!")
+//     });
+// $('#editMovieButton').click(function () {
+//     // e.preventDefault();
+//     alert('form submitted');
+//     if ($('#editTitle').val() === '') {
+//         alert('Please Enter Title');
+//         return;
+//     }
+//     let title = $('#editTitle').val();
+//     let director = $('#editDirector').val();
+//     let genres = $('#editGenres').val();
+//     let plot = $('#editPlot').val();
+//     let poster = $('#editPoster').val();
+//     let rating = $('#editRating').val();
+//     let year = $('#editYear').val();
+//     editMovie(title, director, genres, plot, poster, rating, year).then(function () {
+//         populateMovieList();
+//     });
+//
+// })
