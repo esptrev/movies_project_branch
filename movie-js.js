@@ -21,7 +21,7 @@
                 let genres = data.Genre;
                 let plot = data.Plot;
                 let poster = data.Poster;
-                let rating = data.Rating;
+                let rating = data.Ratings[0].Value;
                 let year = data.Year;
                 return addAMovie(title, director, genres, plot, poster, rating, year);
             })
@@ -74,7 +74,7 @@
         return fetchAllMovies().then(function (allMovies) {
             for (const movie of allMovies) {
                 if (movie.title.toLowerCase() === title.toLowerCase()) {
-                    alert('Movie Deleted')
+                    // alert('Movie Deleted')
                     let id = parseInt(movie.id)
                     fetch(`${MOVIE_URL}/${id}`, OPTIONS)
                         .then(populateMovieList)
@@ -139,11 +139,11 @@
 
 
     $('#searchButton').click(function (){
-        $('#moviePoster').addClass('blur');
+        let genreArray = [];
+
         // populateMovie();
         // $('#closeSearchWindow').removeClass('hide');
-        $('#dblClickModal').removeClass('hide');
-        $('html,body').animate({scrollTop: $('#dblClickModal').offset().top}, 'fast')
+
         fetchAllMovies().then(function (allMovies) {
             for (const movie of allMovies) {
                 if (movie.title.toLowerCase() === $('#searchBox').val().toLowerCase()) {
@@ -155,9 +155,25 @@
                              <div class="card-footer"><img src="${movie.poster}" alt="${movie.title} poster" width="200px"></div>
                        </div>
                      </div>`);
+                    $('#moviePoster').addClass('blur');
+                    $('#dblClickModal').removeClass('hide');
+                    $('html,body').animate({scrollTop: $('#dblClickModal').offset().top}, 'fast')
 
                 }
+                // console.log(movie.genre.toLowerCase().includes($('#searchBox').val().toLowerCase()));
+                if(movie.genre.toLowerCase().includes($('#searchBox').val().toLowerCase())){
+                    // alert('klasdlkfj');
+                    genreArray.push(movie);
+                }
             }
+            if(genreArray.length > 0 ){
+                console.log(genreArray);
+                $('#moviePoster').html('');
+                genreArray.forEach(function (movie){
+                    $('#moviePoster').append(`<img title="${movie.title}" class="posters" src="${movie.poster}" alt="${movie.title} poster">`)
+                })
+            }
+
         })
     })
 
@@ -220,6 +236,7 @@
     })
     $('#closeEditWindowButton').click(function () {
         $('#editMovieModel').addClass('hide');
+        $('#moviePoster').removeClass('blur');
     })
     $("#closeAddWindowButton").click(function () {
         $("#addMovieModel").addClass('hide');
@@ -271,6 +288,8 @@
         $('#moviePoster').removeClass('blur');
     })
 
+    $('#resetButton').click(populateMovieList);
+
 
     $('#dblclickEditbutton').click(function () {
         $('#dblClickModal').addClass('hide');
@@ -280,24 +299,25 @@
                 // console.log(movie.title);
                 console.log(targetTitle);
                 if (movie.title.toLowerCase() === targetTitle.toLowerCase()) {
+                    alert(movie.rating);
                     $('#editMovieModel').removeClass('hide');
                     return $('#oldMovieInfo').append(`
 <!--//htmlformat--> 
 <div id="editAMovieForm">
-<span>Title: </span><input class="m-2 col-4" id="editTitle" type="text" value='${movie.title}'>
+<span>Title: </span><input class="m-2 col-3" id="editTitle" type="text" value='${movie.title}'>
 <label for="editTitle"></label>
-<span>Director: </span><input class="m-2 col-4" id="editDirector" type="text" value='${movie.director}'><br>
+<span>Director: </span><input class="m-2 col-3" id="editDirector" type="text" value='${movie.director}'><br>
 <label for="editDirector"></label>
 <tspan>Poster: </tspan><input class="m-2 col-10" id="editPoster" type="text" value='${movie.poster}'>
 <label for="editPoster"></label>
-<tspan>Rating: </tspan><input class="m-2 col-4" id="editRating" type="text" value='${movie.rating}'>
+<tspan>Rating: </tspan><input class="m-2 col-3" id="editRating" type="text" value='${movie.rating}'>
 <label for="editRating"></label>
-<tspan>Year: </tspan><input class="m-2 col-4" id="editYear" type="text" value='${movie.year}'><br>
+<tspan>Year: </tspan><input class="m-2 col-3" id="editYear" type="text" value='${movie.year}'><br>
 <label for="editYear"></label>
 <span>Genre: </span>
-<input class="m-2 col-4" id="editGenres" type="text" value='${movie.genre}'>
+<input class="m-2 col-3" id="editGenres" type="text" value='${movie.genre}'><br>
 <label for="editGenres"></label>
-<span>Plot: </span><textarea rows="2" cols="60" id="editPlot"  placeholder='${movie.plot}'></textarea>
+<span>Plot: </span><input  class="m-2 col-10" id="editPlot"  value='${movie.plot}'>
 </div>`)
                 }
             }
