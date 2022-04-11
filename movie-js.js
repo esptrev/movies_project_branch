@@ -1,11 +1,12 @@
 (function () {
 
-    const MOVIE_URL = `https://lateral-charming-rice.glitch.me/movies`;
+         // const MOVIE_URL = `https://lateral-charming-rice.glitch.me/movies`;
+    const MOVIE_URL = `http://localhost:8080/movies`;
 
     function getOMDb(movieTitle) {
         return fetch(`http://www.omdbapi.com/?t=${movieTitle}&apikey=${TREVOR_OMDb_key}`)
             .then(function (data) {
-                // console.log(data);
+                console.log(data);
                 return data.json();
             }).then(function (data) {
                 console.log(data);
@@ -17,13 +18,16 @@
             }).then(function (data) {
                 console.log(data);
                 let title = data.Title;
+                let rating = parseFloat(data.Ratings[0].Value);
+                let year = parseInt(data.Year);
+                let genre = data.Genre;
                 let director = data.Director;
-                let genres = data.Genre;
+                let actors = data.Actors;
                 let plot = data.Plot;
                 let poster = data.Poster;
-                let rating = data.Ratings[0].Value;
-                let year = data.Year;
-                return addAMovie(title, director, genres, plot, poster, rating, year);
+
+
+                return addAMovie(title, rating, year, genre, director, actors, plot, poster);
             })
     }
 
@@ -42,16 +46,17 @@
     }
 
 
-    function addAMovie(title, director, genres, plot, poster, rating, year) {
-        const MOVIE_INFO = {
+    function addAMovie(title, rating, year, genre, director, actors, plot, poster) {
+        const MOVIE_INFO =[ {
             title: title,
-            director: director,
-            genre: genres,
-            plot: plot,
-            poster: poster,
             rating: rating,
             year: year,
-        }
+            genre: genre,
+            director: director,
+            actors: actors,
+            plot: plot,
+            poster: poster,
+        }]
 
         const OPTIONS = {
             method: 'POST',
@@ -63,9 +68,14 @@
 
         return fetch(MOVIE_URL, OPTIONS)
             .then(function (res) {
+                console.log(res);
                 alert('New Movie Posted')
             }).then(populateMovieList);
+
     }
+
+
+
 
     function deleteAMovie(title) {
         const OPTIONS = {
@@ -87,18 +97,19 @@
 
     // deleteAMovie(301);
 
-    function editMovie(title, director, genres, plot, poster, rating, year) {
+    function editMovie(title, rating, year, genre, director, actors, plot, poster) {
         const MOVIE_INFO = {
             title: title,
-            director: director,
-            genre: genres,
-            plot: plot,
-            poster: poster,
             rating: rating,
             year: year,
+            genre: genre,
+            director: director,
+            actors: actors,
+            plot: plot,
+            poster: poster,
         }
         const OPTIONS = {
-            method: 'PATCH',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -108,8 +119,8 @@
             for (const movie of allMovies) {
                 if ($('#editTitle').val().toLowerCase() === movie.title.toLowerCase()) {
                     alert('Movie Edited')
-                    let id = parseInt(movie.id)
-                    fetch(`${MOVIE_URL}/${id}`, OPTIONS)
+                    // let id = parseInt(movie.id)
+                    fetch(`${MOVIE_URL}/${movie.id}`, OPTIONS)
                 }
             }
         })
@@ -221,13 +232,15 @@
 
     $('#editMovieButton').click(function () {
         let title = $('#editTitle').val();
-        let director = $('#editDirector').val();
-        let genres = $('#editGenres').val();
-        let plot = $('#editPlot').val();
-        let poster = $('#editPoster').val();
         let rating = $('#editRating').val();
         let year = $('#editYear').val();
-        editMovie(title, director, genres, plot, poster, rating, year).then(function () {
+        let genre = $('#editGenres').val();
+        let director = $('#editDirector').val();
+        let actors = $('#editActors').val();
+        let plot = $('#editPlot').val();
+        let poster = $('#editPoster').val();
+
+        editMovie(title, rating, year, genre, director, actors, plot, poster).then(function () {
             populateMovieList().then(function () {
                 $('#editMovieModel').addClass('hide');
                 $('#moviePoster').removeClass('blur');
